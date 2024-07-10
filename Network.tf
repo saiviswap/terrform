@@ -26,6 +26,16 @@ resource "azurerm_virtual_network" "Appnetwork" {
 
   depends_on = [ azurerm_resource_group.App-grp ]
   }
+resource "azurerm_public_ip" "linuxPublic" {
+  name                = "linuxpublic-ip"
+  resource_group_name = local.name
+  location            = local.location
+  allocation_method   = "Static"
+
+  depends_on = [ azurerm_resource_group.App-grp ]
+
+}
+
 
   resource "azurerm_network_security_group" "NSG" {
   name                = "nsg"
@@ -39,7 +49,7 @@ resource "azurerm_virtual_network" "Appnetwork" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "3389"
+    destination_port_range     = "0-3389"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
